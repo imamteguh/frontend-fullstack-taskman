@@ -7,11 +7,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { useLoginMutation } from '@/hooks/use-auth'
+import { toast } from 'sonner'
+import { useAuth } from '@/provider/auth-context'
 
 type SignInFormData = z.infer<typeof signInSchema>
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
@@ -21,8 +27,22 @@ const SignIn = () => {
     },
   });
 
+  const { mutate, isPending } = useLoginMutation();
+
   const handleOnSubmit = (values: SignInFormData) => {
-    console.log(values)
+    mutate(values, {
+      onSuccess: (data) => {
+        console.log(data);
+        login(data);
+        toast.success("Sign in successful");
+        navigate("/dashboard");
+      },
+      onError: (error: any) => {
+        const errorMessage = error.response?.data?.message || "An error occurred";
+        toast.error(errorMessage);
+        console.log(error);
+      },
+    });
   }
 
   return (
@@ -64,7 +84,9 @@ const SignIn = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' className='w-full'>Sign In</Button>
+              <Button type='submit' className='w-full' disabled={isPending}>
+                {isPending ? "Signing in..." : "Sign In"}
+              </Button>
             </form>
           </Form>
         </CardContent>
