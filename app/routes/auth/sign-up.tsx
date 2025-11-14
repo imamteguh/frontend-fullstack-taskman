@@ -7,13 +7,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useSignUpMutation } from '@/hooks/use-auth'
 import { toast } from 'sonner'
 
 export type SignUpFormData = z.infer<typeof signUpSchema>
 
 const SignUp = () => {
+
+  const navigate = useNavigate();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -30,7 +32,12 @@ const SignUp = () => {
   const handleOnSubmit = (values: SignUpFormData) => {
     mutate(values, {
       onSuccess: () => {
-        toast.success("Account created successfully");
+        toast.success("Email Verification Required", {
+          description: "Please verify your email address to continue, check your inbox for the verification email.",
+        });
+
+        form.reset();
+        navigate("/sign-in");
       },
       onError: (error: any) => {
         const errorMessage = error.response?.data?.message || "Failed to create account";
