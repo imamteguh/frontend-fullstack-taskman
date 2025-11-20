@@ -16,6 +16,7 @@ export const clientLoader = async () => {
     console.log(error);
   }
 };
+
 const DashboardLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
