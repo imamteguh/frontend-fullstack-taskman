@@ -40,7 +40,6 @@ export const Header = ({
       navigate(`/workspaces/${workspace._id}`);
     } else {
       const basePath = location.pathname;
-
       navigate(`${basePath}?workspaceId=${workspace._id}`);
     }
   };

@@ -23,7 +23,7 @@ export const NoDataFound = ({
         {description}
       </p>
       <Button onClick={buttonAction} className="mt-4">
-        <CirclePlus className="size-4 mr-2" />
+        <CirclePlus className="size-4" />
         {buttonText}
       </Button>
     </div>

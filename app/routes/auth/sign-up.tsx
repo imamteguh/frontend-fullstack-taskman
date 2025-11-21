@@ -90,7 +90,7 @@ const SignUp = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type='password' placeholder='********' {...field} />
+                      <Input type='password' placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -103,7 +103,7 @@ const SignUp = () => {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type='password' placeholder='********' {...field} />
+                      <Input type='password' placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

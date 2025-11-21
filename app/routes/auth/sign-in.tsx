@@ -32,7 +32,6 @@ const SignIn = () => {
   const handleOnSubmit = (values: SignInFormData) => {
     mutate(values, {
       onSuccess: (data) => {
-        console.log(data);
         login(data);
         toast.success("Sign in successful");
         navigate("/dashboard");
@@ -62,7 +61,7 @@ const SignIn = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type='email' placeholder='example@example.com' {...field} />
+                      <Input type='email' placeholder='Enter your email' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -78,7 +77,7 @@ const SignIn = () => {
                       <Link to='/forgot-password' className='text-sm text-blue-600'>Forgot password?</Link>
                     </div>
                     <FormControl>
-                      <Input type='password' placeholder='********' {...field} />
+                      <Input type='password' placeholder='Enter your password' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

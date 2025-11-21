@@ -35,7 +35,7 @@ const Workspaces = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-xl md:text-3xl font-bold">Workspaces</h2>
           <Button onClick={() => setIsCreatingWorkspace(true)}>
-            <PlusCircle className="size-4 mr-2" />
+            <PlusCircle className="size-4" />
             New Workspace
           </Button>
         </div>
