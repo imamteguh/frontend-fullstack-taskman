@@ -26,7 +26,7 @@ export const ProjectCard = ({
 }: ProjectCardProps) => {
   return (
     <Link to={`/workspaces/${workspaceId}/projects/${project._id}`}>
-      <Card className="transition-all duration-300 hover:shadow-md hover:translate-y-1">
+      <Card className="transition-all duration-300 hover:shadow-md hover:-translate-y-1">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>{project.title}</CardTitle>
@@ -61,8 +61,8 @@ export const ProjectCard = ({
 
               {project.dueDate && (
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <CalendarDays className="w-4 h-4 text-red-500 mb-0.5" />
-                  <span>{format(project.dueDate, "MMM d, yyyy")}</span>
+                  <CalendarDays className="size-3" />
+                  <span>Due: {format(project.dueDate, "MMM d, yyyy")}</span>
                 </div>
               )}
             </div>

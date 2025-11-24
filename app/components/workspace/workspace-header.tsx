@@ -1,7 +1,7 @@
 import type { User, Workspace } from "@/types";
 import { WorkspaceAvatar } from "./workspace-avatar";
 import { Button } from "../ui/button";
-import { Plus, UserPlus } from "lucide-react";
+import { CirclePlus, Plus, UserPlus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface WorkspaceHeaderProps {
@@ -31,7 +31,7 @@ export const WorkspaceHeader = ({
               <WorkspaceAvatar color={workspace.color} name={workspace.name} />
             )}
 
-            <h2 className="text-xl md:text-2xl font-semibold">
+            <h2 className="text-xl md:text-3xl font-semibold">
               {workspace.name}
             </h2>
           </div>
@@ -42,7 +42,7 @@ export const WorkspaceHeader = ({
               Invite
             </Button>
             <Button onClick={onCreateProject}>
-              <Plus className="size-4" />
+              <CirclePlus className="w-4 h-4 mr-2" />
               Create Project
             </Button>
           </div>
@@ -57,8 +57,7 @@ export const WorkspaceHeader = ({
 
       {members.length > 0 && (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Members</span>
-
+          <span className="text-sm text-muted-foreground">Members:</span>
           <div className="flex gap-1">
             {members.map((member) => (
               <Avatar

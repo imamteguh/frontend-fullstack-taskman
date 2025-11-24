@@ -1,8 +1,8 @@
 import type { ProjectStatus, TaskStatus } from "@/types";
 
 export const publicRoutes = [
-  "/login",
-  "/register",
+  "/sign-in",
+  "/sign-up",
   "/verify-email",
   "/forgot-password",
   "/reset-password",

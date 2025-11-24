@@ -40,7 +40,7 @@ const TaskDetails = () => {
     };
     isLoading: boolean;
   };
-  
+
   const { mutate: watchTask, isPending: isWatching } = useWatchTaskMutation();
   const { mutate: achievedTask, isPending: isAchieved } =
     useAchievedTaskMutation();
@@ -141,9 +141,9 @@ const TaskDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* left side */}
         <div className="lg:col-span-2">
-          <div className="bg-card rounded-lg p-6 shadow-sm mb-6 space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start mb-4">
-              <div className="flex flex-col">
+          <div className="bg-card border rounded-lg p-6 shadow-sm mb-6 space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div>
                 <Badge
                   variant={
                     task.priority === "High"
@@ -156,18 +156,10 @@ const TaskDetails = () => {
                 >
                   {task.priority} Priority
                 </Badge>
-                <div className="text-sm text-muted-foreground">
-                  Created at:{" "}
-                  {formatDistanceToNow(new Date(task.createdAt), {
-                    addSuffix: true,
-                  })}
-                </div>
               </div>
 
               <div className="flex items-center gap-2 mt-4 md:mt-0">
                 <TaskStatusSelector status={task.status} taskId={task._id} />
-
-                <TaskPrioritySelector priority={task.priority} taskId={task._id} />
 
                 <Button
                   variant={"destructive"}
@@ -182,7 +174,16 @@ const TaskDetails = () => {
 
             <div>
               <TaskTitle title={task.title} taskId={task._id} />
+              <div className="text-sm text-muted-foreground pb-3">
+                Created at:{" "}
+                {formatDistanceToNow(new Date(task.createdAt), {
+                  addSuffix: true,
+                })}
+              </div>
 
+              <div className="text-sm text-muted-foreground">
+                Description:
+              </div>
               <TaskDescription
                 description={task.description || ""}
                 taskId={task._id}
@@ -194,6 +195,8 @@ const TaskDetails = () => {
               assignees={task.assignees}
               projectMembers={project.members as any}
             />
+
+            <TaskPrioritySelector priority={task.priority} taskId={task._id} />
 
             <SubTasksDetails subTasks={task.subtasks || []} taskId={task._id} />
           </div>

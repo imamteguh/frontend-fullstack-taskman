@@ -16,7 +16,7 @@ export const TaskActivity = ({ resourceId }: { resourceId: string }) => {
   if (isPending) return <Loader />;
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow-sm">
+    <div className="bg-card border rounded-lg p-6 shadow-sm">
       <h3 className="text-lg text-muted-foreground mb-4">Activity</h3>
 
       <div className="space-y-4">

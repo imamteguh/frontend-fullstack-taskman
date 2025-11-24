@@ -1,7 +1,6 @@
 import { Loader } from "@/components/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,23 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetMyTasksQuery } from "@/hooks/use-task";
 import { useGetWorkspaceDetailsQuery } from "@/hooks/use-workspace";
-import type { Task, Workspace } from "@/types";
-import { format } from "date-fns";
-import { ArrowUpRight, CheckCircle, Clock, FilterIcon } from "lucide-react";
+import type { Workspace } from "@/types";
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 
 const Members = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -101,12 +89,12 @@ const Members = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="px-0">
               <div className="divide-y">
                 {filteredMembers.map((member) => (
                   <div
                     key={member.user._id}
-                    className="flex flex-col md:flex-row items-center justify-between p-4 gap-3"
+                    className="flex flex-col md:flex-row items-center justify-between p-4 gap-3 hover:bg-muted/50"
                   >
                     <div className="flex items-center space-x-4">
                       <Avatar className="bg-gray-500">

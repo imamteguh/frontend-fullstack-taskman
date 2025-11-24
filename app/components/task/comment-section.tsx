@@ -54,7 +54,7 @@ export const CommentSection = ({
     );
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow-sm">
+    <div className="bg-card border rounded-lg p-6 shadow-sm">
       <h3 className="text-lg font-medium mb-4">Comments</h3>
 
       <ScrollArea className="h-[300px] mb-4">

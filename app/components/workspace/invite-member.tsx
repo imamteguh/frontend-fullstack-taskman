@@ -86,8 +86,9 @@ export const InviteMemberDialog = ({
           defaultValue="email"
           value={inviteTab}
           onValueChange={setInviteTab}
+          className="w-full"
         >
-          <TabsList>
+          <TabsList className="w-full">
             <TabsTrigger value="email" disabled={isPending}>
               Send Email
             </TabsTrigger>

@@ -56,11 +56,10 @@ export const SubTasksDetails = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <h3 className="text-sm font-medium text-muted-foreground mb-2">
         Sub Tasks
       </h3>
-
       <div className="space-y-2 mb-4">
         {subTasks.length > 0 ? (
           subTasks.map((subTask) => (
@@ -101,6 +100,7 @@ export const SubTasksDetails = ({
         <Button
           onClick={handleAddSubTask}
           disabled={isPending || newSubTask.length === 0}
+          className="h-11"
         >
           Add
         </Button>

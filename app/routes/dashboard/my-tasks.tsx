@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetMyTasksQuery } from "@/hooks/use-task";
 import type { Task } from "@/types";
 import { format } from "date-fns";
-import { ArrowUpRight, CheckCircle, Clock, FilterIcon } from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpRight, ArrowUpWideNarrow, CheckCircle, CircleCheck, Clock, FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 
@@ -71,21 +71,21 @@ const MyTasks = () => {
   const filteredTasks =
     myTasks?.length > 0
       ? myTasks
-          .filter((task) => {
-            if (filter === "all") return true;
-            if (filter === "todo") return task.status === "To Do";
-            if (filter === "inprogress") return task.status === "In Progress";
-            if (filter === "done") return task.status === "Done";
-            if (filter === "achieved") return task.isArchived === true;
-            if (filter === "high") return task.priority === "High";
+        .filter((task) => {
+          if (filter === "all") return true;
+          if (filter === "todo") return task.status === "To Do";
+          if (filter === "inprogress") return task.status === "In Progress";
+          if (filter === "done") return task.status === "Done";
+          if (filter === "achieved") return task.isArchived === true;
+          if (filter === "high") return task.priority === "High";
 
-            return true;
-          })
-          .filter(
-            (task) =>
-              task.title.toLowerCase().includes(search.toLowerCase()) ||
-              task.description?.toLowerCase().includes(search.toLowerCase())
-          )
+          return true;
+        })
+        .filter(
+          (task) =>
+            task.title.toLowerCase().includes(search.toLowerCase()) ||
+            task.description?.toLowerCase().includes(search.toLowerCase())
+        )
       : [];
 
   //   sort task
@@ -110,13 +110,15 @@ const MyTasks = () => {
         <Loader />
       </div>
     );
+
+
   return (
     <div className="space-y-6">
       <div className="flex items-start md:items-center justify-between">
         <h1 className="text-2xl font-bold">My Tasks</h1>
 
         <div
-          className="flex flex-col items-start md:flex-row md"
+          className="flex flex-col items-start md:flex-row md:items-center gap-2"
           itemScope
           gap-2
         >
@@ -126,7 +128,17 @@ const MyTasks = () => {
               setSortDirection(sortDirection === "asc" ? "desc" : "asc")
             }
           >
-            {sortDirection === "asc" ? "Oldest First" : "Newest First"}
+            {sortDirection === "asc" ? (
+              <>
+                <ArrowUpWideNarrow className="w-4 h-4" />
+                Oldest First
+              </>
+            ) : (
+              <>
+                <ArrowDownWideNarrow className="w-4 h-4" />
+                Newest First
+              </>
+            )}
           </Button>
 
           <DropdownMenu>
@@ -185,20 +197,23 @@ const MyTasks = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="px-0">
               <div className="divide-y">
                 {sortedTasks?.map((task) => (
                   <div key={task._id} className="p-4 hover:bg-muted/50">
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-2 gap-3">
-                      <div className="flex">
-                        <div className="flex gap-2 mr-2">
+                      <div className="flex-1 flex flex-row gap-3">
+                        <div>
                           {task.status === "Done" ? (
-                            <CheckCircle className="size-4 text-green-500" />
+                            <div className="bg-green-500/20 h-full rounded-full p-1">
+                              <CircleCheck className="size-4 text-green-700" />
+                            </div>
                           ) : (
-                            <Clock className="size-4 text-yellow-500" />
+                            <div className="bg-blue-500/20 h-full rounded-full p-1">
+                              <Clock className="size-4 text-blue-700" />
+                            </div>
                           )}
                         </div>
-
                         <div>
                           <Link
                             to={`/workspaces/${task.project.workspace}/projects/${task.project._id}/tasks/${task._id}`}
@@ -212,6 +227,11 @@ const MyTasks = () => {
                               variant={
                                 task.status === "Done" ? "default" : "outline"
                               }
+                              className={
+                                task.status === "Done"
+                                  ? "text-green-700 bg-green-500/20"
+                                  : "text-blue-700 bg-blue-500/20"
+                              }
                             >
                               {task.status}
                             </Badge>
@@ -222,6 +242,11 @@ const MyTasks = () => {
                                   task.priority === "High"
                                     ? "destructive"
                                     : "secondary"
+                                }
+                                className={
+                                  task.priority === "High"
+                                    ? "text-red-700 bg-red-500/20"
+                                    : "text-yellow-700 bg-yellow-500/20"
                                 }
                               >
                                 {task.priority}
@@ -235,14 +260,16 @@ const MyTasks = () => {
                         </div>
                       </div>
 
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        {task.dueDate && (
-                          <div>Due: {format(task.dueDate, "PPPP")}</div>
+                      <div className="lg:w-1/3 text-sm text-muted-foreground space-y-1">
+                        {task.dueDate < new Date() ? (
+                          <div className="text-red-700">Due: {format(task.dueDate, "PPPP")}</div>
+                        ) : (
+                          <div className="text-yellow-700">Due: {format(task.dueDate, "PPPP")}</div>
                         )}
 
                         <div>
                           Project:{" "}
-                          <span className="font-medium">
+                          <span className="font-medium text-black">
                             {task.project.title}
                           </span>
                         </div>
@@ -278,34 +305,36 @@ const MyTasks = () => {
                 {todoTasks?.map((task) => (
                   <Card
                     key={task._id}
-                    className="hover:shadow-md transition-shadow"
+                    className="hover:shadow-md transition-shadow py-4"
                   >
                     <Link
                       to={`/workspaces/${task.project.workspace}/projects/${task.project._id}/tasks/${task._id}`}
                       className="block"
                     >
-                      <h3 className="font-medium">{task.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-3">
-                        {task.description || "No description "}
-                      </p>
+                      <CardContent className="px-3">
+                        <h3 className="font-medium">{task.title}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {task.description || "No description "}
+                        </p>
 
-                      <div className="flex items-center mt-2 gap-2">
-                        <Badge
-                          variant={
-                            task.priority === "High"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                        >
-                          {task.priority}
-                        </Badge>
+                        <div className="flex items-center mt-2 gap-2">
+                          <Badge
+                            variant={
+                              task.priority === "High"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                          >
+                            {task.priority}
+                          </Badge>
 
-                        {task.dueDate && (
-                          <span className="text-sm text-muted-foreground">
-                            {format(task.dueDate, "PPPP")}
-                          </span>
-                        )}
-                      </div>
+                          {task.dueDate && (
+                            <span className="text-sm text-muted-foreground">
+                              {format(task.dueDate, "PPPP")}
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
                     </Link>
                   </Card>
                 ))}
@@ -330,34 +359,36 @@ const MyTasks = () => {
                 {inProgressTasks?.map((task) => (
                   <Card
                     key={task._id}
-                    className="hover:shadow-md transition-shadow"
+                    className="hover:shadow-md transition-shadow py-4"
                   >
                     <Link
                       to={`/workspaces/${task.project.workspace}/projects/${task.project._id}/tasks/${task._id}`}
                       className="block"
                     >
-                      <h3 className="font-medium">{task.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-3">
-                        {task.description || "No description "}
-                      </p>
+                      <CardContent className="px-3">
+                        <h3 className="font-medium">{task.title}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {task.description || "No description "}
+                        </p>
 
-                      <div className="flex items-center mt-2 gap-2">
-                        <Badge
-                          variant={
-                            task.priority === "High"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                        >
-                          {task.priority}
-                        </Badge>
+                        <div className="flex items-center mt-2 gap-2">
+                          <Badge
+                            variant={
+                              task.priority === "High"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                          >
+                            {task.priority}
+                          </Badge>
 
-                        {task.dueDate && (
-                          <span className="text-sm text-muted-foreground">
-                            {format(task.dueDate, "PPPP")}
-                          </span>
-                        )}
-                      </div>
+                          {task.dueDate && (
+                            <span className="text-sm text-muted-foreground">
+                              {format(task.dueDate, "PPPP")}
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
                     </Link>
                   </Card>
                 ))}
@@ -382,34 +413,36 @@ const MyTasks = () => {
                 {doneTasks?.map((task) => (
                   <Card
                     key={task._id}
-                    className="hover:shadow-md transition-shadow"
+                    className="hover:shadow-md transition-shadow py-4"
                   >
                     <Link
                       to={`/workspaces/${task.project.workspace}/projects/${task.project._id}/tasks/${task._id}`}
                       className="block"
                     >
-                      <h3 className="font-medium">{task.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-3">
-                        {task.description || "No description "}
-                      </p>
+                      <CardContent className="px-3">
+                        <h3 className="font-medium">{task.title}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {task.description || "No description "}
+                        </p>
 
-                      <div className="flex items-center mt-2 gap-2">
-                        <Badge
-                          variant={
-                            task.priority === "High"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                        >
-                          {task.priority}
-                        </Badge>
+                        <div className="flex items-center mt-2 gap-2">
+                          <Badge
+                            variant={
+                              task.priority === "High"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                          >
+                            {task.priority}
+                          </Badge>
 
-                        {task.dueDate && (
-                          <span className="text-sm text-muted-foreground">
-                            {format(task.dueDate, "PPPP")}
-                          </span>
-                        )}
-                      </div>
+                          {task.dueDate && (
+                            <span className="text-sm text-muted-foreground">
+                              {format(task.dueDate, "PPPP")}
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
                     </Link>
                   </Card>
                 ))}

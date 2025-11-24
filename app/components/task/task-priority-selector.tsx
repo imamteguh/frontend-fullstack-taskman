@@ -37,16 +37,21 @@ export const TaskPrioritySelector = ({
     );
   };
   return (
-    <Select value={priority || ""} onValueChange={handleStatusChange}>
-      <SelectTrigger className="w-[180px]" disabled={isPending}>
-        <SelectValue placeholder="Priority" />
-      </SelectTrigger>
+    <>
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-muted-foreground">Priority</div>
+        <Select value={priority || ""} onValueChange={handleStatusChange}>
+          <SelectTrigger className="w-full" disabled={isPending}>
+            <SelectValue placeholder="Priority" />
+          </SelectTrigger>
 
-      <SelectContent>
-        <SelectItem value="Low">Low</SelectItem>
-        <SelectItem value="Medium">Medium</SelectItem>
-        <SelectItem value="High">High</SelectItem>
-      </SelectContent>
-    </Select>
+          <SelectContent>
+            <SelectItem value="Low">Low</SelectItem>
+            <SelectItem value="Medium">Medium</SelectItem>
+            <SelectItem value="High">High</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </>
   );
 };

@@ -1,7 +1,7 @@
 import { useAuth } from "@/provider/auth-context";
 import type { Workspace } from "@/types";
 import { Button } from "../ui/button";
-import { Bell, PlusCircle } from "lucide-react";
+import { ArrowDown, Bell, ChevronDown, PlusCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,7 +49,7 @@ export const Header = ({
       <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={"outline"}>
+            <Button variant={"outline"} className="px-2">
               {selectedWorkspace ? (
                 <>
                   {selectedWorkspace.color && (
@@ -59,6 +59,7 @@ export const Header = ({
                     />
                   )}
                   <span className="font-medium">{selectedWorkspace?.name}</span>
+                  <ChevronDown className="w-4 h-4" />
                 </>
               ) : (
                 <span className="font-medium">Select Workspace</span>
@@ -78,13 +79,13 @@ export const Header = ({
                   {ws.color && (
                     <WorkspaceAvatar color={ws.color} name={ws.name} />
                   )}
-                  <span className="ml-2">{ws.name}</span>
+                  <span className="font-medium">{ws.name}</span>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
-            <DropdownMenuGroup>
+            <DropdownMenuGroup className="mt-2">
               <DropdownMenuItem onClick={onCreateWorkspace}>
-                <PlusCircle className="w-4 h-4 mr-2" />
+                <PlusCircle className="w-4 h-4" />
                 Create Workspace
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -92,13 +93,13 @@ export const Header = ({
         </DropdownMenu>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="border rounded-xl p-1">
             <Bell />
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="rounded-full">
+              <button className="rounded-full p-1 border">
                 <Avatar className="w-8 h-8">
                   <AvatarImage src={user?.profilePicture} alt={user?.name} />
                   <AvatarFallback className="bg-primary text-primary-foreground">
@@ -115,7 +116,7 @@ export const Header = ({
                 <Link to="/user/profile">Profile</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>Log Out</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
