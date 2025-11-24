@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card'
 import { ArrowLeft, CheckCircle, Loader, Loader2 } from 'lucide-react'
 import { Link } from 'react-router'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -46,15 +46,14 @@ const ForgotPassword = () => {
     <div className='flex flex-col items-center justify-center h-screen'>
       <div className='w-full max-w-md space-y-6'>
         <div className='flex flex-col items-center justify-center space-y-2'>
-          <h1 className='text-2xl font-bold'>Forgot Password</h1>
+          <h1 className='text-3xl font-semibold'>Forgot Password</h1>
           <p className='text-sm text-gray-600'>Enter your email below to reset your password</p>
         </div>
-
         <Card>
           <CardHeader>
-            <Link to={`/sign-in`} className='flex items-center gap-2'>
-              <ArrowLeft className='w-6 h-6' />
-              <span>Back to Sign In</span>
+            <Link to={`/sign-in`} className='flex items-center gap-2 text-muted-foreground hover:text-primary'>
+              <ArrowLeft className='w-4 h-4' />
+              <span className='text-sm'>Back to login</span>
             </Link>
           </CardHeader>
           <CardContent>
@@ -67,13 +66,13 @@ const ForgotPassword = () => {
             ) : (
               <>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
                     <FormField
                       control={form.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input type='email' placeholder='example@example.com' {...field} />
                           </FormControl>
@@ -82,11 +81,16 @@ const ForgotPassword = () => {
                       )}
                     />
 
-                    <Button type='submit' className='w-full' disabled={isPending}>
+                    <Button type='submit' className='w-full h-10' disabled={isPending}>
                       {isPending ? (
-                        <Loader2 className='w-6 h-6 animate-spin' />
+                        <>
+                          <Loader2 className='animate-spin inline-block w-4 h-4 mr-2' />
+                          <span className='text-sm'>Sending Reset Link...</span>
+                        </>
                       ) : (
-                        "Reset Password"
+                        <>
+                          <span className='text-sm'>Send Reset Link</span>
+                        </>
                       )}
                     </Button>
                   </form>
@@ -94,6 +98,12 @@ const ForgotPassword = () => {
               </>
             )}
           </CardContent>
+          <CardFooter className='flex items-center justify-center pb-4'>
+            <CardDescription className='text-sm'>
+              Remembered your password?&nbsp;
+              <Link to='/sign-in' className='font-semibold text-blue-700 hover:underline'>Login</Link>
+            </CardDescription>
+          </CardFooter>
         </Card>
       </div>
     </div>

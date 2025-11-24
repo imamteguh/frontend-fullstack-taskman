@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Link, useNavigate } from 'react-router'
 import { useSignUpMutation } from '@/hooks/use-auth'
 import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 export type SignUpFormData = z.infer<typeof signUpSchema>
 
@@ -49,14 +50,16 @@ const SignUp = () => {
 
   return (
     <div className='w-full min-h-screen flex flex-col items-center justify-center bg-muted/40'>
-      <Card className='w-full max-w-md shadow-xl p-4'>
-        <CardHeader className='text-center'>
-          <CardTitle className='text-2xl font-bold'>Create an Account</CardTitle>
-          <CardDescription className='text-sm text-muted-foreground'>Sign up to create a new account</CardDescription>
+      <Card className='w-full max-w-md shadow-xl py-6 px-2'>
+        <CardHeader className='text-center pb-6'>
+          <CardTitle className='text-3xl font-semibold'>Create an Account</CardTitle>
+          <CardDescription className='text-sm text-muted-foreground'>
+            Enter your information to create an account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleOnSubmit)} className='space-y-6'>
+            <form onSubmit={form.handleSubmit(handleOnSubmit)} className='space-y-4'>
               <FormField
                 control={form.control}
                 name="name"
@@ -109,16 +112,25 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              <Button type='submit' className='w-full' disabled={isPending}>
-                {isPending ? "Signing Up..." : "Sign Up"}
+              <Button type='submit' className='w-full h-10' disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Loader2 className='animate-spin inline-block w-4 h-4 mr-2' />
+                    <span className='text-sm'>Creating Account...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className='text-sm'>Create Account</span>
+                  </>
+                )}
               </Button>
             </form>
           </Form>
         </CardContent>
-        <CardFooter className='flex items-center justify-center pb-4'>
-          <CardDescription className='text-sm text-muted-foreground'>
+        <CardFooter className='flex items-center justify-center'>
+          <CardDescription className='text-sm'>
             Already have an account?&nbsp;
-            <Link to='/sign-in' className='text-primary'>Sign In</Link>
+            <Link to='/sign-in' className='font-semibold text-blue-700 hover:underline'>Sign in</Link>
           </CardDescription>
         </CardFooter>
       </Card>
