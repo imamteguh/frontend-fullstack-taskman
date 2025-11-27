@@ -10,8 +10,7 @@ import {
   ListCheck,
   LogOut,
   Settings,
-  Users,
-  Wrench,
+  Users
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -24,7 +23,7 @@ export const SidebarComponent = ({
 }: {
   currentWorkspace: Workspace | null;
 }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navItems = [

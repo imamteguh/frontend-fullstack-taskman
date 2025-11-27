@@ -12,7 +12,15 @@ import { Watchers } from "@/components/task/watchers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   useAchievedTaskMutation,
+  useDeleteTaskMutation,
   useTaskByIdQuery,
   useWatchTaskMutation,
 } from "@/hooks/use-task";
@@ -22,6 +30,11 @@ import { format, formatDistanceToNow } from "date-fns";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
+import { FaQuestion } from "react-icons/fa6";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Task Detail", "Review a task's activity, comments, and status.");
 
 const TaskDetails = () => {
   const { user } = useAuth();
@@ -42,11 +55,14 @@ const TaskDetails = () => {
   };
 
   const { mutate: watchTask, isPending: isWatching } = useWatchTaskMutation();
-  const { mutate: achievedTask, isPending: isAchieved } =
-    useAchievedTaskMutation();
+  const { mutate: achievedTask, isPending: isAchieved } = useAchievedTaskMutation();
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   if (!data) {
@@ -161,14 +177,11 @@ const TaskDetails = () => {
               <div className="flex items-center gap-2 mt-4 md:mt-0">
                 <TaskStatusSelector status={task.status} taskId={task._id} />
 
-                <Button
-                  variant={"destructive"}
-                  size="sm"
-                  onClick={() => { }}
-                  className="hidden md:block"
-                >
-                  Delete Task
-                </Button>
+                <DeleteTaskDialog
+                  taskId={task._id}
+                  projectId={projectId!}
+                  workspaceId={workspaceId!}
+                />
               </div>
             </div>
 
@@ -181,9 +194,7 @@ const TaskDetails = () => {
                 })}
               </div>
 
-              <div className="text-sm text-muted-foreground">
-                Description:
-              </div>
+              <div className="text-sm text-muted-foreground">Description:</div>
               <TaskDescription
                 description={task.description || ""}
                 taskId={task._id}
@@ -211,6 +222,76 @@ const TaskDetails = () => {
         </div>
       </div>
     </>
+  );
+};
+
+const DeleteTaskDialog = ({
+  taskId,
+  projectId,
+  workspaceId,
+}: {
+  taskId: string;
+  projectId: string;
+  workspaceId: string;
+}) => {
+  const { mutate: deleteTask, isPending: isDeleting } = useDeleteTaskMutation();
+
+  const navigate = useNavigate();
+
+  const handleDeleteTask = () => {
+    deleteTask(
+      { taskId },
+      {
+        onSuccess: () => {
+          toast.success("Task deleted successfully");
+          navigate(`/workspaces/${workspaceId}/projects/${projectId}`);
+        },
+        onError: () => {
+          toast.error("Failed to delete task");
+        },
+      }
+    );
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant={"destructive"} size="sm">
+          Delete Task
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <div className="flex flex-col items-center justify-center py-6">
+          <DialogTitle>
+            <div className="bg-red-200 p-4 rounded-full mb-2">
+              <FaQuestion size={50} className="text-red-500" />
+            </div>
+          </DialogTitle>
+
+          <span className="text-xl text-black">Delete Confirmation</span>
+          <p className="text-sm">
+            Are you sure you want to delete the selected record?
+          </p>
+
+          <div className="flex justify-center mt-6 items-center gap-x-3">
+            <DialogClose asChild>
+              <Button variant={"outline"} className="px-4 py-2">
+                Cancel
+              </Button>
+            </DialogClose>
+
+            <Button
+              disabled={isDeleting}
+              variant="outline"
+              className="px-4 py-2 text-sm font-medium bg-destructive text-white hover:bg-destructive hover:text-white"
+              onClick={handleDeleteTask}
+            >
+              Yes. Delete
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

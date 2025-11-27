@@ -11,6 +11,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useForgotPasswordMutation } from '@/hooks/use-auth'
 import { toast } from 'sonner'
+import { createPageMeta } from '@/lib/meta'
+
+export const meta = () =>
+  createPageMeta("Forgot Password", "Reset your TaskMan password via email link.");
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
 

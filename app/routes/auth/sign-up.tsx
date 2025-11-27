@@ -11,6 +11,10 @@ import { Link, useNavigate } from 'react-router'
 import { useSignUpMutation } from '@/hooks/use-auth'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import { createPageMeta } from '@/lib/meta'
+
+export const meta = () =>
+  createPageMeta("Sign Up", "Create your TaskMan account and start organizing work.");
 
 export type SignUpFormData = z.infer<typeof signUpSchema>
 

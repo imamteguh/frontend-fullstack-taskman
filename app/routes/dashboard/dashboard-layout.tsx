@@ -5,8 +5,8 @@ import { CreateWorkspace } from "@/components/workspace/create-workspace";
 import { fetchData } from "@/lib/fetch-util";
 import { useAuth } from "@/provider/auth-context";
 import type { Workspace } from "@/types";
-import { useEffect, useMemo, useState } from "react";
-import { Navigate, Outlet, useLoaderData, useSearchParams } from "react-router";
+import { useState } from "react";
+import { Navigate, Outlet } from "react-router";
 
 export const clientLoader = async () => {
   try {
@@ -23,21 +23,6 @@ const DashboardLayout = () => {
   const [currentWorkspace, setCurrentWorkspace] = useState<Workspace | null>(
     null
   );
-  const { workspaces } = useLoaderData() as { workspaces: Workspace[] };
-  const [searchParams] = useSearchParams();
-
-  const selectedWorkspaceId = searchParams.get("workspaceId");
-
-  const workspaceById = useMemo(() => {
-    if (!workspaces || !selectedWorkspaceId) return null;
-    return workspaces.find((w) => w._id === selectedWorkspaceId) || null;
-  }, [workspaces, selectedWorkspaceId]);
-
-  useEffect(() => {
-    if (workspaceById) {
-      setCurrentWorkspace(workspaceById);
-    }
-  }, [workspaceById]);
 
   if (isLoading) {
     return <Loader />;
@@ -64,7 +49,12 @@ const DashboardLayout = () => {
 
         <main className="flex-1 overflow-y-auto h-full w-full">
           <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-8">
-            <Outlet />
+            <Outlet
+              context={{
+                currentWorkspace,
+                onWorkspaceSelected: handleWorkspaceSelected,
+              }}
+            />
           </div>
         </main>
       </div>

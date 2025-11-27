@@ -11,6 +11,10 @@ import { useForm } from 'react-hook-form'
 import { data, Link, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { createPageMeta } from '@/lib/meta'
+
+export const meta = () =>
+  createPageMeta("Reset Password", "Choose a new TaskMan password and secure your account.");
 
 
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>

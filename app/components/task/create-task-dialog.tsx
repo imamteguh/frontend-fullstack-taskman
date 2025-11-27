@@ -94,7 +94,7 @@ export const CreateTaskDialog = ({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid gap-4 py-4">
               <FormField
                 control={form.control}
@@ -208,11 +208,11 @@ export const CreateTaskDialog = ({
                               (!field.value ? "text-muted-foreground" : "")
                             }
                           >
-                            <CalendarIcon className="size-4 mr-2" />
+                            <CalendarIcon className="size-4 mr-2 text-muted-foreground" />
                             {field.value ? (
                               format(new Date(field.value), "PPPP")
                             ) : (
-                              <span>Pick a date</span>
+                              <span className="text-muted-foreground">Pick a date</span>
                             )}
                           </Button>
                         </PopoverTrigger>

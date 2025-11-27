@@ -12,9 +12,13 @@ import { getProjectProgress } from "@/lib";
 import { cn } from "@/lib/utils";
 import type { Project, Task, TaskStatus } from "@/types";
 import { format } from "date-fns";
-import { AlertCircle, Calendar, CheckCircle, Clock } from "lucide-react";
+import { AlertCircle, Calendar, CheckCircle, CirclePlus, Clock, Cog, Plus, Settings } from "lucide-react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Project Detail", "Track project progress, tasks, and members.");
 
 const ProjectDetail = () => {
   const { projectId, workspaceId } = useParams<{
@@ -35,7 +39,11 @@ const ProjectDetail = () => {
   };
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   const { project, tasks } = data;
@@ -70,7 +78,15 @@ const ProjectDetail = () => {
               {projectProgress}%
             </span>
           </div>
-          <Button onClick={() => setIsCreateTask(true)}>Add Task</Button>
+          <Button onClick={() => setIsCreateTask(true)}>
+            <CirclePlus className="size-4 mr-2" />
+            Add Task
+          </Button>
+          <Link to={`/workspaces/${workspaceId}/projects/${projectId}/settings`}>
+            <Button variant="outline" size="icon">
+              <Settings className="size-4" />
+            </Button>
+          </Link>
         </div>
       </div>
 

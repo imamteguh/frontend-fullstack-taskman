@@ -41,7 +41,7 @@ export const TaskTitle = ({
           disabled={isPending}
         />
       ) : (
-        <h2 className="text-xl flex-1 font-semibold">{title}</h2>
+        <h2 className="text-xl font-semibold">{title}</h2>
       )}
 
       {isEditing ? (
@@ -69,7 +69,7 @@ export const TaskTitle = ({
         </>
       ) : (
         <Edit
-          className="size-4 cursor-pointer"
+          className="size-3 cursor-pointer"
           onClick={() => setIsEditing(true)}
         />
       )}

@@ -14,11 +14,19 @@ import { useGetWorkspacesQuery } from "@/hooks/use-workspace";
 import type { Workspace } from "@/types";
 import { PlusCircle, Users } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
 import { format } from "date-fns";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Workspaces", "Browse and manage your TaskMan workspaces.");
+
+type DashboardOutletContext = {
+  onWorkspaceSelected: (workspace: Workspace) => void;
+};
 
 const Workspaces = () => {
-
+  const { onWorkspaceSelected } = useOutletContext<DashboardOutletContext>();
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
   const { data: workspaces, isLoading } = useGetWorkspacesQuery() as {
     data: Workspace[];
@@ -46,7 +54,11 @@ const Workspaces = () => {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {workspaces.map((ws) => (
-            <WorkspaceCard key={ws._id} workspace={ws} />
+            <WorkspaceCard
+              key={ws._id}
+              workspace={ws}
+              onWorkspaceSelected={onWorkspaceSelected}
+            />
           ))}
 
           {workspaces.length === 0 && (
@@ -68,9 +80,18 @@ const Workspaces = () => {
   );
 };
 
-const WorkspaceCard = ({ workspace }: { workspace: Workspace }) => {
+const WorkspaceCard = ({
+  workspace,
+  onWorkspaceSelected,
+}: {
+  workspace: Workspace;
+  onWorkspaceSelected?: (workspace: Workspace) => void;
+}) => {
   return (
-    <Link to={`/workspaces/${workspace._id}`}>
+    <Link
+      to={`/workspaces/${workspace._id}`}
+      onClick={() => onWorkspaceSelected?.(workspace)}
+    >
       <Card className="transition-all hover:shadow-md hover:-translate-y-1">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">

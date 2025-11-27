@@ -3,7 +3,7 @@ import { StatsCard } from "@/components/dashboard/stat-card";
 import { StatisticsCharts } from "@/components/dashboard/statistics-charts";
 import { Loader } from "@/components/loader";
 import { UpcomingTasks } from "@/components/upcoming-tasks";
-import { useGetWorkspaceStatsQuery, useGetWorkspacesQuery } from "@/hooks/use-workspace";
+import { useGetWorkspaceStatsQuery } from "@/hooks/use-workspace";
 import type {
   Project,
   ProjectStatusData,
@@ -13,36 +13,19 @@ import type {
   TaskTrendsData,
   WorkspaceProductivityData,
 } from "@/types";
-import { useNavigate, useSearchParams } from "react-router";
-import { useEffect, useMemo, useState } from "react";
-import type { Workspace } from "@/types";
+import { Navigate, useSearchParams } from "react-router";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Dashboard", "View workspace analytics, stats, and upcoming work.");
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const workspaceId = searchParams.get("workspaceId");
 
-  const { data: workspaces, isLoading: isWorkspacesLoading } =
-    useGetWorkspacesQuery() as { data: Workspace[]; isLoading: boolean };
-
-  const [isAutoSelecting, setIsAutoSelecting] = useState(false);
-
-  const latestWorkspace = useMemo(() => {
-    if (!workspaces || workspaces.length === 0) return null;
-    if (workspaces.length === 1) return workspaces[0];
-
-    return [...workspaces].sort((a, b) => {
-      const aTime = Math.max(
-        new Date(a.updatedAt).getTime(),
-        new Date(a.createdAt).getTime()
-      );
-      const bTime = Math.max(
-        new Date(b.updatedAt).getTime(),
-        new Date(b.createdAt).getTime()
-      );
-      return bTime - aTime;
-    })[0];
-  }, [workspaces]);
+  if (!workspaceId) {
+    return <Navigate to="/workspaces" />;
+  }
 
   const { data, isPending } = useGetWorkspaceStatsQuery(workspaceId!) as {
     data: {
@@ -56,32 +39,6 @@ const Dashboard = () => {
     };
     isPending: boolean;
   };
-
-  useEffect(() => {
-    if (workspaceId) return;
-    if (isWorkspacesLoading) return;
-    if (!latestWorkspace) return;
-
-    setIsAutoSelecting(true);
-    const basePath = window.location.pathname;
-    navigate(`${basePath}?workspaceId=${latestWorkspace._id}`, { replace: true });
-  }, [workspaceId, isWorkspacesLoading, latestWorkspace, navigate]);
-
-  if (!workspaceId) {
-    if (isWorkspacesLoading || isAutoSelecting) {
-      return (
-        <div>
-          <Loader />
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        <p>No workspaces found</p>
-      </div>
-    );
-  }
 
   if (isPending) {
     return (

@@ -12,6 +12,10 @@ import { useLoginMutation } from '@/hooks/use-auth'
 import { toast } from 'sonner'
 import { useAuth } from '@/provider/auth-context'
 import { Loader2 } from 'lucide-react'
+import { createPageMeta } from '@/lib/meta'
+
+export const meta = () =>
+  createPageMeta("Sign In", "Sign in to TaskMan to manage projects and tasks.");
 
 type SignInFormData = z.infer<typeof signInSchema>
 
@@ -35,7 +39,7 @@ const SignIn = () => {
       onSuccess: (data) => {
         login(data);
         toast.success("Sign in successful");
-        navigate("/dashboard");
+        navigate("/workspaces");
       },
       onError: (error: any) => {
         const errorMessage = error.response?.data?.message || "An error occurred";

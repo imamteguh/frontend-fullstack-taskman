@@ -14,6 +14,10 @@ import { useGetWorkspaceDetailsQuery } from "@/hooks/use-workspace";
 import type { Workspace } from "@/types";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Workspace Members", "Search and manage members inside a workspace.");
 
 const Members = () => {
   const [searchParams, setSearchParams] = useSearchParams();

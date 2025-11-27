@@ -5,6 +5,10 @@ import { CheckCircle, Loader, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useVerifyEmailMutation } from '@/hooks/use-auth';
 import { toast } from 'sonner';
+import { createPageMeta } from '@/lib/meta';
+
+export const meta = () =>
+  createPageMeta("Verify Email", "Confirm your TaskMan email address to activate your account.");
 
 
 const VerifyEmail = () => {

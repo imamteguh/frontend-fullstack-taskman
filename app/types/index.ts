@@ -45,6 +45,7 @@ export interface Project {
     user: User;
     role: "admin" | "member" | "owner" | "viewer";
   }[];
+  tags: [],
   createdAt: Date;
   updatedAt: Date;
   isArchived: boolean;

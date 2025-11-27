@@ -24,6 +24,10 @@ import { format } from "date-fns";
 import { ArrowDownWideNarrow, ArrowUpRight, ArrowUpWideNarrow, CheckCircle, CircleCheck, Clock, FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("My Tasks", "Filter and track every task assigned to you.");
 
 const MyTasks = () => {
   const [searchParams, setSearchParams] = useSearchParams();

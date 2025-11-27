@@ -7,6 +7,10 @@ import { useGetWorkspaceQuery } from "@/hooks/use-workspace";
 import type { Project, Workspace } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Workspace Details", "Review workspace members, projects, and actions.");
 
 const WorkspaceDetails = () => {
   const { workspaceId } = useParams<{ workspaceId: string }>();

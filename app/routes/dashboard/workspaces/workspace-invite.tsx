@@ -16,6 +16,10 @@ import {
 import type { Workspace } from "@/types";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { toast } from "sonner";
+import { createPageMeta } from "@/lib/meta";
+
+export const meta = () =>
+  createPageMeta("Workspace Invite", "Review and accept invitations to join a workspace.");
 
 const WorkspaceInvite = () => {
   const { workspaceId } = useParams();
