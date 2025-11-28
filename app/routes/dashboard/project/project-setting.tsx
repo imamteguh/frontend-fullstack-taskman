@@ -64,37 +64,16 @@ const ProjectSetting = () => {
   const form = useForm<UpdateProjectFormData>({
     resolver: zodResolver(updateProjectSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      status: ProjectStatus.PLANNING,
-      startDate: "",
-      dueDate: "",
-      tags: "",
+      title: project?.title || "",
+      description: project?.description || "",
+      status: project?.status ?? ProjectStatus.PLANNING,
+      startDate: project?.startDate ? new Date(project.startDate).toISOString() : "",
+      dueDate: project?.dueDate ? new Date(project.dueDate).toISOString() : "",
+      tags: Array.isArray(project?.tags)
+        ? project.tags.join(", ")
+        : project?.tags ?? "",
     },
   });
-
-  useEffect(() => {
-    if (!project) return;
-
-    const normalizeStatus = (status?: string): ProjectStatus => {
-      if (!status) return ProjectStatus.PLANNING;
-      const normalized = Object.values(ProjectStatus).find(
-        (s) => s.toLowerCase() === status.toLowerCase()
-      );
-      return normalized ?? ProjectStatus.PLANNING;
-    };
-
-    form.reset({
-      title: project.title ?? "",
-      description: project.description ?? "",
-      status: normalizeStatus(project.status),
-      startDate: project.startDate ? new Date(project.startDate).toISOString() : "",
-      dueDate: project.dueDate ? new Date(project.dueDate).toISOString() : "",
-      tags: Array.isArray(project.tags)
-        ? project.tags.join(", ")
-        : project.tags ?? "",
-    });
-  }, [project, form]);
 
   const { mutate, isPending } = UseUpdateProject();
 

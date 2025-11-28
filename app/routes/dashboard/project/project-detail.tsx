@@ -57,11 +57,14 @@ const ProjectDetail = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row items-end lg:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+          <div>
           <BackButton />
-          <div className="flex gap-3 items-center">
-            <h1 className="text-xl md:text-2xl font-bold">{project.title}</h1>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:gap-3 lg:items-center">
+            <h1 className="text-xl md:text-2xl font-bold truncate">{project.title}</h1>
             {project.description && (
               <p className="text-sm text-gray-500">{project.description}</p>
             )}
